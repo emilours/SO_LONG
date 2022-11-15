@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 20:55:14 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/15 21:07:07 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,3 +115,10 @@ int	map_checking(char **file, char *argv)
 	}
 	return (0);
 }
+
+//faire boucle while dans boucle while pour incrementer la map avec deux indices
+// erreur map rectangulaire
+// erreir .ber : fichier cache / .ber.ber : ok ?
+//erreur : recep tous les C avant de E
+// loop end avant de destroy pour eviter leaks
+// telecharger sprites
