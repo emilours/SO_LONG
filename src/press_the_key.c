@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 14:19:23 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/16 14:19:32 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:14:26 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	key_press(int key, t_player *player)
 {
+	t_game	game;
+
 	if (key == KEY_ESC)
-	//loop_end avant de destroy window
-		exit (0);
+		exit_game(&game); //loop end et exit normal dans le main
 	if (key == KEY_W)
 		player->y++;
 	if (key == KEY_S)

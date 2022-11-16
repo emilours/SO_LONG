@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:21:17 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/16 14:06:12 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/16 19:53:44 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	ft_init_map(t_map *map)
 	map->size = 0;
 	map->i = 0;
 	map->j = 0;
+	map->height = 0;
+	map->width = 0;
+	map->mapping = NULL;
 }
 
 void	ft_init_player(t_player *player)
@@ -30,7 +33,7 @@ void	ft_init_player(t_player *player)
 
 void	ft_init_game(t_game *game)
 {
-	game->mlx_ptr = NULL;
-	game->win_ptr = NULL;
+	game->mlx = NULL;
+	game->win = NULL;
 	game->img = NULL;
 }
