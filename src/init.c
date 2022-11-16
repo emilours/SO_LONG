@@ -6,25 +6,31 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:21:17 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 20:30:17 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:06:12 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-int	key_press(int key, void *structure)
+void	ft_init_map(t_map *map)
 {
-	(void)structure;
-	if (key == KEY_ESC)
-    //loop_end avant de destroy window
-		exit (0);
-	// if (KEY_W)
-	// 	exit(0);
-	// if (KEY_S)
-	// 	exit(0);
-	// if (KEY_A)
-	// 	exit(0);
-	// if (KEY_D)
-	// 	exit(0);
-	return (0);
+	map->nb_e = 0;
+	map->nb_p = 0;
+	map->nb_c = 0;
+	map->size = 0;
+	map->i = 0;
+	map->j = 0;
+}
+
+void	ft_init_player(t_player *player)
+{
+	player->x = 0;
+	player->y = 0;
+}
+
+void	ft_init_game(t_game *game)
+{
+	game->mlx_ptr = NULL;
+	game->win_ptr = NULL;
+	game->img = NULL;
 }

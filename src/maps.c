@@ -6,56 +6,45 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 21:07:07 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:10:09 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-char	**fill_map(char *file)
+char	**fill_map(char *file, t_map *map)
 {
 	int		fd;
-	int		size;
-	char	**map;
+	char	**mapping;
 	char	*line;
 
 	fd = open(file, O_RDONLY);
-	size = 0;
+	map->size = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		free(line);
 		line = NULL;
-		size++;
+		map->size++;
 		line = get_next_line(fd);
 	}
 	close(fd);
-	map = malloc(sizeof(char *) * size + 1);
+	mapping = malloc(sizeof(char *) * map->size + 1);
 	fd = open(file, O_RDONLY); // error gestion
-	map[0] = get_next_line(fd);
-	size = 0;
-	while (map[size])
+	mapping[0] = get_next_line(fd);
+	map->size = 0;
+	while (mapping[map->size])
 	{
-		size++;
-		map[size] = get_next_line(fd);
+		map->size++;
+		mapping[map->size] = get_next_line(fd);
 	}
-	map[size + 1] = 0;
-	return (map);
+	mapping[map->size + 1] = 0;
+	return (mapping);
 }
 
-int	map_checking(char **file, char *argv)
+int	map_checking(char **file, char *argv, t_map *map)
 {
-	size_t	i;
-	size_t	j;
-	int		nb_e;
-	int		nb_p;
-	int		nb_c;
-
-	i = 0;
-	nb_e = 0;
-	nb_p = 0;
-	nb_c = 0;
-	if (argv[i])
+	if (argv[map->i])
 	{
 		if (argv[0] == '.')
 		{
@@ -63,10 +52,10 @@ int	map_checking(char **file, char *argv)
 			write (2, "Map must be a valid file", 24);
 			return (1);
 		}
-		i = ft_strlen(argv);
-		if (argv[i - 1])
+		map->i = ft_strlen(argv);
+		if (argv[map->i - 1])
 		{
-			i--;
+			map->i--;
 			if (!ft_strnstr(argv, ".ber", ft_strlen(argv)))
 			{
 				write (2, "Error\n", 6);
@@ -75,39 +64,41 @@ int	map_checking(char **file, char *argv)
 			}
 		}
 	}
-	j = 0;
-	while (j++ <= ft_strlen(&file[0][j]))
+	map->i = 0;
+	map->j = 0;
+	while (map->i <= ft_strlen(&file[map->i][map->j]))
 	{
-		i = 0;
-		while (i++ <= ft_strlen(&file[i][j]))
+		while (map->j <= ft_strlen(&file[map->i][map->j]))
 		{
-			if (file[i][j] != '1')
+			if (file[map->i][map->j] != '1' || file[map->i - 1][map->j - 1] != '1')
 			{	
 				write (2, "Error\n", 6);
 				write (2, "Map must be surrounded by walls", 31); //souci
 				return (1);
 			}
-			else if (file[i][j] == 'E')
-				nb_e++;
-			else if (file[i][j] == 'P')
-				nb_p++;
-			else if (file[i][j] == 'C')
-				nb_c++;
+			else if (file[map->i++][map->j++] == 'E')
+				map->nb_e++;
+			else if (file[map->i++][map->j++] == 'P')
+				map->nb_p++;
+			else if (file[map->i++][map->j++] == 'C')
+				map->nb_c++;
+			map->j++;
 		}
+		map->i++;
 	}
-	if (nb_e != 1)
+	if (map->nb_e != 1)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must only have one exit", 31);
 		return (1);
 	}
-	if (nb_p != 1)
+	if (map->nb_p != 1)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must have one starting position", 35);
 		return (1);
 	}
-	if (nb_c == 0)
+	if (map->nb_c == 0)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must have at least one collectible", 38);
