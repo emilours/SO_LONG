@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/16 20:26:19 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/20 19:11:46 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ int	map_checking(char **file, t_map *map)
 	if (map->nb_e != 1)
 	{
 		write (2, "Error\n", 6);
-		write (2, "Map must only have one exit", 31);
+		write (2, "Map must only have one exit", 29);
 		return (1);
 	}
 	if (map->nb_p != 1)
 	{
 		write (2, "Error\n", 6);
-		write (2, "Map must have one starting position", 35);
+		write (2, "Map must only have one starting position", 40);
 		return (1);
 	}
 	if (map->nb_c == 0)

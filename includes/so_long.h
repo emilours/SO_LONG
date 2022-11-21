@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:25:39 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/16 19:59:19 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:38:36 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,18 @@ typedef struct t_map
 	int		height;
 	int		width;
 	char	**mapping;
+	void	*wall;
+	void	*exit;
+	void	*empty;
+	void	*pos;
+	void	*item;
 }				t_map;
 
 typedef struct t_player
 {
 	int		x;
 	int		y;
+	int		walks;
 }				t_player;
 
 typedef struct t_game
@@ -60,12 +66,14 @@ typedef struct t_game
 int		main(int argc, char **argv);
 void	fill_map(t_map *map, char *file);
 int		map_checking(char **file, t_map *map);
-int		key_press(int key, t_player *player);
+int		press_key(int key);
 void	ft_init_map(t_map *map);
 void	ft_init_player(t_player *player);
 void	ft_init_game(t_game *game);
 void	textures_to_window(t_map *map);
 int		argv_checking(char *argv, t_map *map);
 void	exit_game(t_game *game);
+void	move_player(char **line, t_player *player, t_map *map);
+void	set_texture(t_game *game, t_map *map);
 
 #endif

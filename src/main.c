@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:58:24 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/16 20:15:38 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:20:09 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
-	t_map	map;
-	int		largeur = 64;
-	int		longueur = 64;
+	t_game		game;
+	t_map		map;
+	t_player	player;
+	int	o;
+	int	p;
 
 	ft_init_map(&map);
+	ft_init_player(&player);
+	ft_init_game(&game);
 	if (argc != 2)
 	{
 		write (2, "Error\n", 7);
@@ -33,13 +36,12 @@ int	main(int argc, char **argv)
 		else if (argv_checking(argv[1], &map) == 1)
 			exit (EXIT_FAILURE);
 	}
+	o = map.size * 64;
+	p = (ft_strlen(map.mapping[0]) - 1) * 64;
 	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, 600, 600, "my_first_window");
-	game.img = mlx_xpm_file_to_image(game.mlx, "textures/test.xpm", &largeur, &longueur);
-	if (!game.img)
-		return (0);
-	mlx_put_image_to_window(game.mlx, game.win, game.img, 64, 64);
-	mlx_hook(game.win, 2, 1L, key_press, NULL);
+	game.win = mlx_new_window(game.mlx, p, o, "Cat's hunting");
+	set_texture(&game, &map);
+	mlx_hook(game.win, 2, 1L, press_key, NULL);
 	mlx_loop(game.mlx);
 	exit_game(&game);
 	return (0);
