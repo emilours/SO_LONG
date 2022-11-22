@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:58:24 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/21 20:20:09 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:24:01 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	t_game		game;
-	t_map		map;
-	t_player	player;
-	int	o;
-	int	p;
+	t_solong	solong;	
+	int			o;
+	int			p;
 
-	ft_init_map(&map);
-	ft_init_player(&player);
-	ft_init_game(&game);
+	ft_init_solong(&solong);
 	if (argc != 2)
 	{
 		write (2, "Error\n", 7);
@@ -30,20 +26,20 @@ int	main(int argc, char **argv)
 	}
 	if (argv[1])
 	{
-		fill_map(&map, argv[1]);
-		if (map_checking(map.mapping, &map) == 1)
+		fill_map(&solong, argv[1]);
+		if (map_checking(&solong) == 1)
 			exit (EXIT_FAILURE);
-		else if (argv_checking(argv[1], &map) == 1)
+		else if (argv_checking(argv[1], &solong) == 1)
 			exit (EXIT_FAILURE);
 	}
-	o = map.size * 64;
-	p = (ft_strlen(map.mapping[0]) - 1) * 64;
-	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, p, o, "Cat's hunting");
-	set_texture(&game, &map);
-	mlx_hook(game.win, 2, 1L, press_key, NULL);
-	mlx_loop(game.mlx);
-	exit_game(&game);
+	o = solong.map.size * 64;
+	p = (ft_strlen(solong.map.mapping[0]) - 1) * 64;
+	solong.game.mlx = mlx_init();
+	solong.game.win = mlx_new_window(solong.game.mlx, p, o, "EAT SLEEP MEOW");
+	set_image(&solong);
+	mlx_hook(solong.game.win, 2, 1L, &press_key, &solong);
+	mlx_loop(solong.game.mlx);
+	exit_game(&solong);
 	return (0);
 }
 	// dprintf(2, "key : %d\n", key);

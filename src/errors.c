@@ -6,21 +6,23 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/20 19:11:46 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:25:27 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	exit_game(t_game *game)
+void	exit_game(t_solong *solong)
 {
-	mlx_loop_end(game->mlx);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
+	mlx_loop_end(solong->game.mlx);
+	destroy_image(solong);
+	ft_free(solong->map.mapping);
+	mlx_destroy_window(solong->game.mlx, solong->game.win);
+	mlx_destroy_display(solong->game.mlx);
+	free(solong->game.mlx);
 }
 
-int	argv_checking(char *argv, t_map *map)
+int	argv_checking(char *argv, t_solong *solong)
 {
 	if (argv)
 	{
@@ -30,10 +32,10 @@ int	argv_checking(char *argv, t_map *map)
 			write (2, "Map must be a valid file", 24);
 			return (1);
 		}
-		map->i = ft_strlen(argv);
-		if (argv[map->i - 1])
+		solong->map.i = ft_strlen(argv);
+		if (argv[solong->map.i - 1])
 		{
-			map->i--;
+			solong->map.i--;
 			if (!ft_strnstr(argv, ".ber", ft_strlen(argv)))
 			{
 				write (2, "Error\n", 6);
@@ -45,47 +47,61 @@ int	argv_checking(char *argv, t_map *map)
 	return (0);
 }
 
-int	map_checking(char **file, t_map *map)
+int	map_checking(t_solong *solong)
 {
-	map->i = 0;
-	while ((int)map->i < map->size)
+	solong->map.i = 0;
+	while ((int)solong->map.i < solong->map.size)
 	{
-		map->j = 0;
-		if (file[map->i][0] != '1' || file[map->i][ft_strlen(file[map->i]) - 2] != '1')
+		solong->map.j = 0;
+		if (solong->map.mapping[solong->map.i][0] != '1' || solong->map.mapping[solong->map.i][ft_strlen(solong->map.mapping[solong->map.i]) - 2] != '1')
 		{
 			write(2, "Error\n", 6);
 			write(2, "Map must be surrounded by walls", 31);
 			return (1);
 		}
-		while (map->j < ft_strlen(file[map->i]) - 1)
+		while (solong->map.j < ft_strlen(solong->map.mapping[solong->map.i]) - 1)
 		{
-			if (file[map->i][map->j] == 'E')
-				map->nb_e++;
-			else if (file[map->i][map->j] == 'P')
-				map->nb_p++;
-			else if (file[map->i][map->j] == 'C')
-				map->nb_c++;
-			map->j++;
+			if (solong->map.mapping[solong->map.i][solong->map.j] == 'E')
+				solong->map.nb_e++;
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == 'P')
+				solong->map.nb_p++;
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == 'C')
+				solong->map.nb_c++;
+			solong->map.j++;
 		}
-		map->i++;
+		solong->map.i++;
 	}
-	if (map->nb_e != 1)
+	if (solong->map.nb_e != 1)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must only have one exit", 29);
 		return (1);
 	}
-	if (map->nb_p != 1)
+	if (solong->map.nb_p != 1)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must only have one starting position", 40);
 		return (1);
 	}
-	if (map->nb_c == 0)
+	if (solong->map.nb_c == 0)
 	{
 		write (2, "Error\n", 6);
 		write (2, "Map must have at least one collectible", 38);
 		return (1);
 	}
 	return (0);
+}
+
+char	**ft_free(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != NULL)
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+	return (NULL);
 }

@@ -6,13 +6,13 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/21 20:14:24 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/22 18:55:23 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	fill_map(t_map *map, char *file)
+void	fill_map(t_solong *solong, char *file)
 {
 	int		fd;
 	char	*line;
@@ -25,79 +25,70 @@ void	fill_map(t_map *map, char *file)
 		close(fd);
 		exit(errno);
 	}
-	map->size = 0;
+	solong->map.size = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		free(line);
 		line = NULL;
-		map->size++;
+		solong->map.size++;
 		line = get_next_line(fd);
 	}
 	close(fd);
-	map->mapping = malloc(sizeof(char *) * map->size + 1);
+	solong->map.mapping = malloc(sizeof(char *) * solong->map.size + 1);
 	fd = open(file, O_RDONLY);
-	map->mapping[0] = get_next_line(fd);
-	map->size = 0;
-	while (map->mapping[map->size])
+	solong->map.mapping[0] = get_next_line(fd);
+	solong->map.size = 0;
+	while (solong->map.mapping[solong->map.size])
 	{
-		map->size++;
-		map->mapping[map->size] = get_next_line(fd);
+		solong->map.size++;
+		solong->map.mapping[solong->map.size] = get_next_line(fd);
 	}
-	map->mapping[map->size + 1] = 0;
+	solong->map.mapping[solong->map.size + 1] = 0;
 }
 
-void	set_texture(t_game *game, t_map *map)
+void	set_image(t_solong *solong)
 {
 	int	img_width;
 	int	img_height;
 
-	map->wall = mlx_xpm_file_to_image(game->mlx, "txr/wall.xpm", &img_width, &img_height);
-	map->exit = mlx_xpm_file_to_image(game->mlx, "txr/exit.xpm", &img_width, &img_height);
-	map->empty = mlx_xpm_file_to_image(game->mlx, "txr/fond.xpm", &img_width, &img_height);
-	map->pos = mlx_xpm_file_to_image(game->mlx, "txr/perso.xpm", &img_width, &img_height);
-	map->item = mlx_xpm_file_to_image(game->mlx, "txr/item.xpm", &img_width, &img_height);
-	map->i = 0;
-	while ((int)map->i < map->size)
+	solong->img.wall = mlx_xpm_file_to_image(solong->game.mlx, "txr/wall.xpm", &img_width, &img_height);
+	solong->img.exit = mlx_xpm_file_to_image(solong->game.mlx, "txr/exit.xpm", &img_width, &img_height);
+	solong->img.empty = mlx_xpm_file_to_image(solong->game.mlx, "txr/fond.xpm", &img_width, &img_height);
+	solong->img.pos = mlx_xpm_file_to_image(solong->game.mlx, "txr/perso.xpm", &img_width, &img_height);
+	solong->img.item = mlx_xpm_file_to_image(solong->game.mlx, "txr/item.xpm", &img_width, &img_height);
+	solong->map.i = 0;
+	while ((int)solong->map.i < solong->map.size)
 	{
-		map->j = 0;
-		while (map->j < ft_strlen(map->mapping[map->i]))
+		solong->map.j = 0;
+		while (solong->map.j < ft_strlen(solong->map.mapping[solong->map.i]))
 		{
-			if (map->mapping[map->i][map->j] == 'E')
-				mlx_put_image_to_window (game->mlx, game->win, map->exit, map->j * 64, map->i * 64);
-			else if (map->mapping[map->i][map->j] == '1')
-				mlx_put_image_to_window (game->mlx, game->win, map->wall, map->j * 64, map->i * 64);
-			else if (map->mapping[map->i][map->j] == '0')
-				mlx_put_image_to_window (game->mlx, game->win, map->empty, map->j * 64, map->i * 64);
-			else if (map->mapping[map->i][map->j] == 'P')
-				mlx_put_image_to_window (game->mlx, game->win, map->pos, map->j * 64, map->i * 64);
-			else if (map->mapping[map->i][map->j] == 'C')
-				mlx_put_image_to_window (game->mlx, game->win, map->item, map->j * 64, map->i * 64);
-			map->j++;
+			if (solong->map.mapping[solong->map.i][solong->map.j] == 'E')
+				mlx_put_image_to_window (solong->game.mlx, solong->game.win, solong->img.exit, solong->map.j * 64, solong->map.i * 64);
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == '1')
+				mlx_put_image_to_window (solong->game.mlx, solong->game.win, solong->img.wall, solong->map.j * 64, solong->map.i * 64);
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == '0')
+				mlx_put_image_to_window (solong->game.mlx, solong->game.win, solong->img.empty, solong->map.j * 64, solong->map.i * 64);
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == 'P')
+				mlx_put_image_to_window (solong->game.mlx, solong->game.win, solong->img.pos, solong->map.j * 64, solong->map.i * 64);
+			else if (solong->map.mapping[solong->map.i][solong->map.j] == 'C')
+				mlx_put_image_to_window (solong->game.mlx, solong->game.win, solong->img.item, solong->map.j * 64, solong->map.i * 64);
+			solong->map.j++;
 		}
-		map->i++;
+		solong->map.i++;
 	}
 }
 
-// 	while (index < map->size)
-// 	{
-// 		if (line[index] == '1')
-// 			mlx_put_image_to_window (game->mlx, game->win, map->wall, 64, 64);
-// 		if (line[index] == 'E')
-// 			mlx_put_image_to_window (game->mlx, game->win, map->exit, 128, 128);
-// 		// if (line[index] == 'C')
-// 		// 	mlx_put_image_to_window (game->mlx, game->win, "txr/wall.xpm", 64, 64);
-// 		// if (line[index] == 'P')
-// 		// 	mlx_put_image_to_window (game->mlx, game->win, "txr/wall.xpm", 64, 64);
-// 		else
-// 			mlx_put_image_to_window (game->mlx, game->win, map->empty, 264, 264);
-// 		index++;
-// 	}
-// }
-
-// erreur map rectangulaire
-// checker si les 1 au milieu voir papier
-// erreir .ber : fichier cache / .ber.ber : ok ?
-//erreur : recep tous les C avant de E
-// loop end avant de destroy pour eviter leaks
-// telecharger sprites
+void	destroy_image(t_solong *solong)
+{
+	if (solong->img.wall != NULL)
+		mlx_destroy_image(solong->game.mlx, solong->img.wall);
+	if (solong->img.exit != NULL)
+		mlx_destroy_image(solong->game.mlx, solong->img.exit);
+	if (solong->img.empty != NULL)
+		mlx_destroy_image(solong->game.mlx, solong->img.empty);
+	if (solong->img.item != NULL)
+		mlx_destroy_image(solong->game.mlx, solong->img.item);
+	if (solong->img.pos != NULL)
+		mlx_destroy_image(solong->game.mlx, solong->img.pos);
+}

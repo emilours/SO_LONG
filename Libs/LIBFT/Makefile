@@ -6,7 +6,7 @@
 #    By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 19:42:17 by eminatch          #+#    #+#              #
-#    Updated: 2022/11/15 18:42:45 by eminatch         ###   ########.fr        #
+#    Updated: 2022/11/22 20:19:14 by eminatch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ OBJ_PATH    = obj/
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -MMD -MP
 
-#      ft_strchr.c 
 SRC = ft_isalpha.c \
       ft_isdigit.c \
       ft_isalnum.c \
