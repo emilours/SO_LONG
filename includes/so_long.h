@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:25:39 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/22 20:46:27 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/23 21:10:33 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	char	position;
+	int		position;
 	int		count_item;
 	int		total_item;
 }				t_player;
@@ -79,8 +79,8 @@ typedef struct s_solong
 void	ft_init_solong(t_solong *solong);
 
 /* graphic part */
-int		map_checking(t_solong *solong);
 void	fill_map(t_solong *solong, char *file);
+int		map_checking(t_solong *solong);
 void	textures_to_window(t_solong *solong);
 void	set_image(t_solong *solong);
 void	destroy_image(t_solong *solong);
@@ -88,9 +88,8 @@ void	destroy_image(t_solong *solong);
 /* player part */
 int		main(int argc, char **argv);
 int		press_key(int key, t_solong *solong);
-void	move_player(t_solong *solong);
-int		counting_item(t_solong *solong);
-void	ft_find_player(t_solong *solong, char c);
+void	action(t_solong *solong, int x, int y);
+void	ft_find_player(t_map *map);
 
 /* errors part*/
 void	exit_game(t_solong *solong);

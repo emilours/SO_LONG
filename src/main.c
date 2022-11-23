@@ -6,11 +6,34 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:58:24 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/22 19:24:01 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/23 21:34:49 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
+
+void	ft_init_solong(t_solong *solong)
+{
+	solong->map.nb_e = 0;
+	solong->map.nb_p = 0;
+	solong->map.nb_c = 0;
+	solong->map.size = 0;
+	solong->map.i = 0;
+	solong->map.j = 0;
+	solong->map.height = 0;
+	solong->map.width = 0;
+	solong->map.mapping = NULL;
+	solong->img.wall = NULL;
+	solong->img.exit = NULL;
+	solong->img.empty = NULL;
+	solong->img.pos = NULL;
+	solong->img.item = NULL;
+	solong->player.count_item = 0;
+	solong->player.total_item = 0;
+	solong->game.mlx = NULL;
+	solong->game.img = NULL;
+	solong->game.win = NULL;
+}
 
 int	main(int argc, char **argv)
 {
@@ -42,10 +65,3 @@ int	main(int argc, char **argv)
 	exit_game(&solong);
 	return (0);
 }
-	// dprintf(2, "key : %d\n", key);
-	// int i = 0;
-	// while (map.mapping[i])
-	// {
-	// 	printf(" line %d: %s\n", i, map[i]);
-	// 	i++;
-	// }

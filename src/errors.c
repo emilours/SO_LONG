@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/22 19:25:27 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/23 21:37:10 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	exit_game(t_solong *solong)
 {
-	mlx_loop_end(solong->game.mlx);
 	destroy_image(solong);
 	ft_free(solong->map.mapping);
 	mlx_destroy_window(solong->game.mlx, solong->game.win);
