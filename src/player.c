@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:11 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/23 21:34:38 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/23 21:44:41 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	action(t_solong *solong, int x, int y)
 {
 	if (solong->map.mapping[x][y] == 'E'
 			&& solong->map.nb_c == 0)
-		exit_game(solong);
+		mlx_loop_end(solong->game.mlx);
 	else if (solong->map.mapping[x][y] != '1'
 			&& solong->map.mapping[x][y] != 'E')
 	{
