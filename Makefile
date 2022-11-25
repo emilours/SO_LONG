@@ -6,7 +6,7 @@
 #    By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/08 16:22:36 by eminatch          #+#    #+#              #
-#    Updated: 2022/11/23 15:17:37 by eminatch         ###   ########.fr        #
+#    Updated: 2022/11/24 19:10:27 by eminatch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC = main.c \
 		player.c \
 		maps.c \
 		errors.c \
+		path.c \
 
 SRCS = $(addprefix $(SRC_PATH), $(SRC))
 
