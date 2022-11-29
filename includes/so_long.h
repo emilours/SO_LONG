@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:25:39 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/25 23:44:16 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 21:17:40 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,13 @@ void	ft_init_solong(t_sl *sl);
 int		main(int argc, char **argv);
 
 /* graphic part */
-void	fill_map(t_sl *sl, char *file);
+int		fill_map(t_sl *sl, char *file);
 void	fill_map_bis(t_sl *sl, char *file);
 void	textures_to_window(t_sl *sl);
 void	set_img(t_sl *sl);
 void	img_to_win(t_sl *sl);
 void	destroy_image(t_sl *sl);
+void	update_img(t_sl *sl);
 
 /* player part */
 int		press_key(int key, t_sl *sl);
@@ -102,14 +103,16 @@ void	exit_game(t_sl *sl);
 int		argv_checking(char *argv, t_sl *sl);
 int		map_checking(t_sl *sl);
 int		map_checking_bis(t_sl *sl);
-char	**ft_free(char **str);
+void	ft_free(char **str);
 
 /* path_finding */
 int		stuck(t_sl *sl, int x, int y);
 int		not_stuck(t_sl *sl, int x, int y);
 int		check_move(t_sl *sl, int x, int y);
 int		check_path(t_sl *sl);
-void	fill_map2(t_sl *sl, char *file);
-void	fill_map2_bis(t_sl *sl, char *file);
+void	**fill_map2(t_sl *sl, char *file);
+void	**fill_map2_bis(t_sl *sl, char *file);
+int		print_tab(char **tab, t_sl *sl);
+int		**copy_map(t_sl *sl, char *str);
 
 #endif

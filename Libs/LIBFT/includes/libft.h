@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 19:24:37 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 18:44:40 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:46:27 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ char	*ft_read_line(int fd, char *line);
 char	*ft_strchr(char *s, int c);
 char	*ft_get_line(char *s);
 char	*ft_get_new_line(char *old_line);
+char	*strjoin_gnl(char *s, char *s1);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:11 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/25 23:54:02 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:59:21 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	press_key(int key, t_sl *sl)
 	sl->m.i = 0;
 	sl->m.j = 0;
 	if (key == KEY_ESC)
+	{
 		mlx_loop_end(sl->g.mlx);
+		return (1);
+	}
 	ft_find_player(&sl->m);
 	if (key == KEY_W)
 		action(sl, sl->m.i - 1, sl->m.j);
@@ -27,7 +30,7 @@ int	press_key(int key, t_sl *sl)
 		action(sl, sl->m.i, sl->m.j - 1);
 	else if (key == KEY_S)
 		action(sl, sl->m.i + 1, sl->m.j);
-	set_img(sl);
+	update_img(sl);
 	return (0);
 }
 
@@ -54,12 +57,10 @@ void	ft_find_player(t_m *m)
 		m->j = 0;
 		while (m->j < ft_strlen(m->map[m->i]))
 		{
-			printf("%d\n == j", (int)m->j);
 			if (m->map[m->i][m->j] == 'P')
 			{
 				m->i_p = m->i;
 				m->j_p = m->j;
-				printf("\n%d == ip", m->i_p);
 				return ;
 			}
 			m->j++;

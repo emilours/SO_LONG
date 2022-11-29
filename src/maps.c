@@ -6,13 +6,13 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/25 23:33:57 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 21:27:21 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	fill_map(t_sl *sl, char *file)
+int	fill_map(t_sl *sl, char *file)
 {
 	int		fd;
 	char	*line;
@@ -22,38 +22,50 @@ void	fill_map(t_sl *sl, char *file)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		close(fd);
-		exit(errno);
 	}
 	sl->m.size = 0;
-	line = get_next_line(fd);
-	while (line)
+	while (1)
 	{
-		free(line);
-		line = NULL;
-		sl->m.size++;
 		line = get_next_line(fd);
+		if (!line)
+			break ;
+		free(line);
+		sl->m.size++;
+	}
+	if (sl->m.size < 3)
+	{
+		ft_putstr_fd ("Error\nAt least 3lines for a valid map\n", 2);
+		return (1);
 	}
 	close(fd);
 	fill_map_bis(sl, file);
+	return (0);
 }
 
 void	fill_map_bis(t_sl *sl, char *file)
 {
 	int		fd;
 
-	sl->m.map = malloc(sizeof(char *) * sl->m.size + 1);
+	sl->m.map = malloc(sizeof(char *) * (sl->m.size + 1));
+	if (!sl->m.map)
+		return ;
 	fd = open(file, O_RDONLY);
-	sl->m.map[0] = get_next_line(fd);
+	// sl->m.map[0] = get_next_line(fd);
 	sl->m.size = 0;
-	while (sl->m.map[sl->m.size])
+	while (1)
 	{
-		sl->m.size++;
 		sl->m.map[sl->m.size] = get_next_line(fd);
+		if (!sl->m.map[sl->m.size])
+			break ;
+		sl->m.size++;
 	}
-	sl->m.map[sl->m.size + 1] = 0;
+	// while (sl->m.map[sl->m.size])
+	// {
+	// 	sl->m.size++;
+	// 	sl->m.map[sl->m.size] = get_next_line(fd);
+	// }
+	close(fd);
 }
-
 void	set_img(t_sl *sl)
 {
 	int	w;
@@ -87,6 +99,17 @@ void	img_to_win(t_sl *sl)
 	else if (sl->m.map[sl->m.i][sl->m.j] == 'C')
 		mlx_put_image_to_window (sl->g.mlx, sl->g.win, sl->im.c, sl->m.j * 64, sl->m.i * 64);
 	sl->m.j++;
+}
+
+void	update_img(t_sl *sl)
+{
+	while ((int)sl->m.i < sl->m.size)
+	{
+		sl->m.j = 0;
+		while (sl->m.j < ft_strlen(sl->m.map[sl->m.i]))
+			img_to_win(sl);
+		sl->m.i++;
+	}
 }
 
 void	destroy_image(t_sl *sl)

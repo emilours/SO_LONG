@@ -6,12 +6,13 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 20:14:31 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 18:44:15 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:45:51 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
+/*searches for the first occurrence of a char in the string*/
 char	*ft_strchr(char *s, int c)
 {
 	int	i;
@@ -30,6 +31,40 @@ char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
+/*concatenates two strings in a third one.
+s = line (stock)
+s1 = temp (where are kept what is read by function READ
+and are cleaned before READ is called again.)*/
+char	*strjoin_gnl(char *s, char *s1)
+{
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	if (!s)
+	{
+		s = (char *)malloc(1 * sizeof(char));
+		s[0] = '\0';
+	}
+	if (!s || !s1)
+		return (NULL);
+	str = malloc(sizeof(char) * ((ft_strlen(s) + ft_strlen(s1)) + 1));
+	if (str == NULL)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (s)
+		while (s[++i] != '\0')
+			str[i] = s[i];
+	while (s1[j] != '\0')
+		str[i++] = s1[j++];
+	str[ft_strlen(s) + ft_strlen(s1)] = '\0';
+	free(s);
+	return (str);
+}
+
+/*finds the line to be returned by GNL in what I read
+thanks to ft_read_line and copies this string in str.*/
 char	*ft_get_line(char *s)
 {
 	int		i;
@@ -58,6 +93,10 @@ char	*ft_get_line(char *s)
 	return (str);
 }
 
+/*Cleans my stock : the char not returned by GNL remain in my static char.
+old line = what is returned by GNL + what is not returned by GNL.
+The chars remaining (> /n) are kept to be copied in new line.
+new line = strlen(old line) - GNL(return).*/
 char	*ft_get_new_line(char *old_line)
 {
 	int		i;

@@ -6,18 +6,21 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 20:14:09 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/15 18:44:18 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:46:13 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
+/*I read and I keep what is read in temp.
+Temp is concatenated to line(my stock).
+temp is freed to be reused for another read.*/
 char	*ft_read_line(int fd, char *line)
 {
 	char	*temp;
 	int		i;
 
-	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	temp = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!temp)
 		return (NULL);
 	i = 1;
@@ -27,16 +30,22 @@ char	*ft_read_line(int fd, char *line)
 		if ((i == -1) || read(fd, temp, 0))
 		{
 			free(temp);
-			temp = NULL;
 			return (NULL);
 		}
 		temp[i] = '\0';
-		line = ft_strjoin(line, temp);
+		line = strjoin_gnl(line, temp);
 	}
 	free(temp);
 	return (line);
 }
 
+/*If the read chars don’t contain a \n 
+and if the BUFFER_SIZE is nut null,
+all we need to do is READ again and add the new read chars.
+Then, if there is a \n in the static string, we will
+ be able to extract the part before the \n,
+to return it as a line, saving the other part
+ in the static variable, over and over.*/
 char	*get_next_line(int fd)
 {
 	char		*line;

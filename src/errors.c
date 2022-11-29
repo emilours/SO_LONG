@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/24 19:35:36 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/29 21:25:52 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 
 void	exit_game(t_sl *sl)
 {
-	destroy_image(sl);
-	ft_free(sl->m.map);
-	mlx_destroy_window(sl->g.mlx, sl->g.win);
-	mlx_destroy_display(sl->g.mlx);
-	free(sl->g.mlx);
+	if (sl->g.mlx)
+	{
+		if (sl->g.win)
+		{
+			destroy_image(sl);
+			mlx_destroy_window(sl->g.mlx, sl->g.win);
+			mlx_destroy_display(sl->g.mlx);
+		}
+		free(sl->g.mlx);
+	}
+	if (sl->m.map)
+		ft_free(sl->m.map);
+	if (sl->m.cpy_map)
+		ft_free(sl->m.cpy_map);
+	exit(0);
 }
 
 int	argv_checking(char *argv, t_sl *sl)
@@ -98,16 +108,12 @@ int	map_checking_bis(t_sl *sl)
 	return (0);
 }
 
-char	**ft_free(char **str)
+void	ft_free(char **str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
+	while (str[i])
+		free(str[i++]);
 	free(str);
-	return (NULL);
 }
