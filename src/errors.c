@@ -6,13 +6,13 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/29 21:25:52 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:13:37 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	exit_game(t_sl *sl)
+int	exit_game(t_sl *sl)
 {
 	if (sl->g.mlx)
 	{
@@ -28,7 +28,7 @@ void	exit_game(t_sl *sl)
 		ft_free(sl->m.map);
 	if (sl->m.cpy_map)
 		ft_free(sl->m.cpy_map);
-	exit(0);
+	return (0);
 }
 
 int	argv_checking(char *argv, t_sl *sl)
@@ -37,8 +37,7 @@ int	argv_checking(char *argv, t_sl *sl)
 	{
 		if (argv[0] == '.')
 		{
-			write (2, "Error\n", 6);
-			write (2, "Map must be a valid file", 24);
+			ft_error("Map must be a valid file");
 			return (1);
 		}
 		sl->m.i = ft_strlen(argv);
@@ -47,8 +46,7 @@ int	argv_checking(char *argv, t_sl *sl)
 			sl->m.i--;
 			if (!ft_strnstr(argv, ".ber", ft_strlen(argv)))
 			{
-				write (2, "Error\n", 6);
-				write(2, "Map must be a .ber file", 23);
+				ft_error("Map must be a .ber file");
 				return (1);
 			}
 		}
@@ -65,8 +63,7 @@ int	map_checking(t_sl *sl)
 		if (sl->m.map[sl->m.i][0] != '1'
 			|| sl->m.map[sl->m.i][ft_strlen(sl->m.map[sl->m.i]) - 2] != '1')
 		{
-			write(2, "Error\n", 6);
-			write(2, "Map must be surrounded by walls", 31);
+			ft_error("Map must be surrounded by walls");
 			return (1);
 		}
 		while (sl->m.j < ft_strlen(sl->m.map[sl->m.i]) - 1)
@@ -80,6 +77,11 @@ int	map_checking(t_sl *sl)
 			sl->m.j++;
 		}
 		sl->m.i++;
+		if (sl->m.size < 3)
+		{
+			ft_error("At least three lines to be a valid map");
+			return (1);
+		}
 	}
 	map_checking_bis(sl);
 	return (0);
@@ -89,21 +91,32 @@ int	map_checking_bis(t_sl *sl)
 {
 	if (sl->m.nb_e != 1)
 	{
-		write (2, "Error\n", 6);
-		write (2, "Map must only have one exit", 29);
+		ft_error("Map must only have one exit");
 		return (1);
 	}
 	if (sl->m.nb_p != 1)
 	{
-		write (2, "Error\n", 6);
-		write (2, "Map must only have one starting position", 40);
+		ft_error("Map must only have one starting position");
 		return (1);
 	}
 	if (sl->m.nb_c == 0)
 	{
-		write (2, "Error\n", 6);
-		write (2, "Map must have at least one collectible", 38);
+		ft_error("Map must have at least one collectible");
 		return (1);
+	}
+	return (0);
+}
+
+int	map_is_rectangle(t_sl *sl)
+{
+	if (sl->m.map[sl->m.size])
+	{
+		if ((int)ft_strlen(sl->m.map[sl->m.size])
+			!= (int)ft_strlen(sl->m.map[sl->m.size - 1]))
+		{
+			ft_error("Map must be a rectangle");
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -116,4 +129,11 @@ void	ft_free(char **str)
 	while (str[i])
 		free(str[i++]);
 	free(str);
+}
+
+void	ft_error(char *err)
+{
+	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd(err, 2);
+	ft_putstr_fd("\n ", 2);
 }

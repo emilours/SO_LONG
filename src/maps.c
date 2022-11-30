@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/29 21:27:21 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:14:11 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,40 +32,33 @@ int	fill_map(t_sl *sl, char *file)
 		free(line);
 		sl->m.size++;
 	}
-	if (sl->m.size < 3)
-	{
-		ft_putstr_fd ("Error\nAt least 3lines for a valid map\n", 2);
-		return (1);
-	}
 	close(fd);
 	fill_map_bis(sl, file);
 	return (0);
 }
 
-void	fill_map_bis(t_sl *sl, char *file)
+int	fill_map_bis(t_sl *sl, char *file)
 {
 	int		fd;
 
 	sl->m.map = malloc(sizeof(char *) * (sl->m.size + 1));
 	if (!sl->m.map)
-		return ;
+		return (1);
 	fd = open(file, O_RDONLY);
-	// sl->m.map[0] = get_next_line(fd);
 	sl->m.size = 0;
 	while (1)
 	{
 		sl->m.map[sl->m.size] = get_next_line(fd);
 		if (!sl->m.map[sl->m.size])
-			break ;
+			return (1);
+		// if (map_is_rectangle(sl) == 1)
+		// 	return (1);
 		sl->m.size++;
 	}
-	// while (sl->m.map[sl->m.size])
-	// {
-	// 	sl->m.size++;
-	// 	sl->m.map[sl->m.size] = get_next_line(fd);
-	// }
 	close(fd);
+	return (0);
 }
+
 void	set_img(t_sl *sl)
 {
 	int	w;

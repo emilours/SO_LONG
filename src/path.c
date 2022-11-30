@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 19:11:27 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/29 20:58:47 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:52:17 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ int	not_stuck(t_sl *sl, int x, int y)
 	return (1);
 }
 
+// print_tab(sl->m.cpy_map, sl);
 int	check_move(t_sl *sl, int x, int y)
 {
 	sl->m.cpy_map[x][y] = '1';
-	// print_tab(sl->m.cpy_map, sl);
 	if (stuck(sl, x, y) == 1)
 		return (1);
 	if (not_stuck(sl, x, y - 1) == 0)

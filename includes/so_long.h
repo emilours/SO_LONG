@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:25:39 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/29 21:17:40 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:42:29 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define KEY_A			97
 # define KEY_S			115
 # define KEY_D			100
+# define X_EVENT		
 
 typedef struct s_m
 {
@@ -63,6 +64,7 @@ typedef struct s_player
 	int		position;
 	int		count_item;
 	int		total_item;
+	int		p_moves;
 }				t_player;
 
 typedef struct s_g
@@ -83,10 +85,11 @@ typedef struct s_sl
 /* main */
 void	ft_init_solong(t_sl *sl);
 int		main(int argc, char **argv);
+int		check_condition(t_sl *sl, char **argv);
 
 /* graphic part */
 int		fill_map(t_sl *sl, char *file);
-void	fill_map_bis(t_sl *sl, char *file);
+int		fill_map_bis(t_sl *sl, char *file);
 void	textures_to_window(t_sl *sl);
 void	set_img(t_sl *sl);
 void	img_to_win(t_sl *sl);
@@ -97,13 +100,16 @@ void	update_img(t_sl *sl);
 int		press_key(int key, t_sl *sl);
 void	action(t_sl *sl, int x, int y);
 void	ft_find_player(t_m *m);
+void		nb_moves(t_sl *sl);
 
 /* errors part*/
-void	exit_game(t_sl *sl);
+int		exit_game(t_sl *sl);
 int		argv_checking(char *argv, t_sl *sl);
 int		map_checking(t_sl *sl);
 int		map_checking_bis(t_sl *sl);
 void	ft_free(char **str);
+void	ft_error(char *s1);
+int		map_is_rectangle(t_sl *sl);
 
 /* path_finding */
 int		stuck(t_sl *sl, int x, int y);

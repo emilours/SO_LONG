@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:58:24 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/29 21:29:01 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:45:42 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_init_solong(t_sl *sl)
 	sl->im.c = NULL;
 	sl->ply.count_item = 0;
 	sl->ply.total_item = 0;
+	sl->ply.p_moves = 0;
 	sl->g.mlx = NULL;
 	sl->g.img = NULL;
 	sl->g.win = NULL;
@@ -52,6 +53,20 @@ int	print_tab(char **tab, t_sl *sl)
 	return (0);
 }
 
+int	check_condition(t_sl *sl, char **argv)
+{
+	sl->m.file = argv[1];
+	if (argv_checking(argv[1], sl) == 1)
+		return (1);
+	if (fill_map(sl, argv[1]) == 1)
+		return (1);
+	if (map_checking(sl) == 1)
+		return (1);
+	if (check_path(sl) == 1)
+		return (1);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_sl		sl;	
@@ -65,21 +80,23 @@ int	main(int argc, char **argv)
 		write (2, "Mapping issue", 13);
 		return (1);
 	}
+	// check_condition(&sl, argv);
 	sl.m.file = argv[1];
-	if (fill_map(&sl, argv[1]) == 1)
-		exit_game(&sl);
 	if (argv_checking(argv[1], &sl) == 1)
-		exit_game(&sl);
+		return (1);
+	if (fill_map(&sl, argv[1]) == 1)
+		return (1);
 	if (map_checking(&sl) == 1)
-		exit_game(&sl);
+		return (1);
 	if (check_path(&sl) == 1)
-		exit_game(&sl);
+		return (1);
 	o = sl.m.size * 64;
 	p = (ft_strlen(sl.m.map[0]) - 1) * 64;
 	sl.g.mlx = mlx_init();
 	sl.g.win = mlx_new_window(sl.g.mlx, p, o, "EAT SLEEP MEOW");
 	set_img(&sl);
-	mlx_hook(sl.g.win, 2, 1L << 0, &press_key, &sl);
+	mlx_hook(sl.g.win, 2, 1L << 0, press_key, &sl);
+	mlx_hook(sl.g.win, 33, 1L << 5, exit_game, &sl);
 	mlx_loop(sl.g.mlx);
 	exit_game(&sl);
 	return (0);
