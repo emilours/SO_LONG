@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:21:32 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/30 20:13:37 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/12/01 19:18:08 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	exit_game(t_sl *sl)
 		ft_free(sl->m.map);
 	if (sl->m.cpy_map)
 		ft_free(sl->m.cpy_map);
+	exit(EXIT_FAILURE);
 	return (0);
 }
 
@@ -83,7 +84,8 @@ int	map_checking(t_sl *sl)
 			return (1);
 		}
 	}
-	map_checking_bis(sl);
+	if (map_checking_bis(sl) == 1)
+		return (1);
 	return (0);
 }
 
@@ -91,7 +93,7 @@ int	map_checking_bis(t_sl *sl)
 {
 	if (sl->m.nb_e != 1)
 	{
-		ft_error("Map must only have one exit");
+		ft_error("Map must have one exit");
 		return (1);
 	}
 	if (sl->m.nb_p != 1)
@@ -109,14 +111,11 @@ int	map_checking_bis(t_sl *sl)
 
 int	map_is_rectangle(t_sl *sl)
 {
-	if (sl->m.map[sl->m.size])
+	if (sl->m.size > 0)
 	{
-		if ((int)ft_strlen(sl->m.map[sl->m.size])
-			!= (int)ft_strlen(sl->m.map[sl->m.size - 1]))
-		{
-			ft_error("Map must be a rectangle");
+		if ((int)ft_strlen_sl(sl->m.map[sl->m.size])
+			!= (int)ft_strlen_sl(sl->m.map[sl->m.size - 1]))
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -136,4 +135,14 @@ void	ft_error(char *err)
 	ft_putstr_fd("Error\n", 2);
 	ft_putstr_fd(err, 2);
 	ft_putstr_fd("\n ", 2);
+}
+
+size_t	ft_strlen_sl(char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s && s[len] != '\n' && s[len] != '\0')
+		len++;
+	return (len);
 }

@@ -6,13 +6,13 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 19:11:27 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/30 20:52:17 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:08:09 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	**fill_map2(t_sl *sl, char *file)
+int	fill_map2(t_sl *sl, char *file)
 {
 	int		fd;
 	char	*line;
@@ -33,17 +33,18 @@ void	**fill_map2(t_sl *sl, char *file)
 		sl->m.size++;
 	}
 	close(fd);
-	fill_map2_bis(sl, file);
+	if (fill_map2_bis(sl, file) == 1)
+		return (1);
 	return (0);
 }
 
-void	**fill_map2_bis(t_sl *sl, char *file)
+int	fill_map2_bis(t_sl *sl, char *file)
 {
 	int		fd;
 
 	sl->m.cpy_map = malloc(sizeof(char *) * (sl->m.size + 1));
 	if (!sl->m.cpy_map)
-		return (NULL);
+		return (1);
 	fd = open(file, O_RDONLY);
 	sl->m.cpy_map[0] = get_next_line(fd);
 	sl->m.size = 0;
@@ -52,7 +53,6 @@ void	**fill_map2_bis(t_sl *sl, char *file)
 		sl->m.size++;
 		sl->m.cpy_map[sl->m.size] = get_next_line(fd);
 	}
-	//sl->m.cpy_map[sl->m.size + 1] = 0;
 	close(fd);
 	return (0);
 }
@@ -109,13 +109,21 @@ int	check_path(t_sl *sl)
 	int	cpy_nb_c;
 
 	cpy_nb_c = sl->m.nb_c;
-	fill_map2(sl, sl->m.file);
+	if (fill_map2(sl, sl->m.file) == 1)
+		return (1);
 	ft_find_player(&sl->m);
 	check_move(sl, sl->m.i_p, sl->m.j_p);
 	if (sl->m.nb_e > 0)
-		ft_putstr_fd("Path is not valid : exit is not found\n", 2);
+	{
+		printf("\033[1;32m%s\033[0m\n", "je rentre ici aussi pourquoi");
+		ft_error("Path is not valid : exit is not found");
+		return (1);
+	}
 	if (sl->m.nb_c != 0)
-		ft_putstr_fd("Path is not valid : item reachable\n", 2);
+	{
+		ft_error("Path is not valid : item reachable");
+		return (1);
+	}
 	sl->m.nb_c = cpy_nb_c;
 	return (0);
 }

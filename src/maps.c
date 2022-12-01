@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:02 by eminatch          #+#    #+#             */
-/*   Updated: 2022/11/30 20:14:11 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/12/01 20:31:28 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,37 @@ int	fill_map(t_sl *sl, char *file)
 		sl->m.size++;
 	}
 	close(fd);
-	fill_map_bis(sl, file);
+	if (fill_map_bis(sl, file) == 1)
+		return (1);
 	return (0);
 }
 
 int	fill_map_bis(t_sl *sl, char *file)
 {
 	int		fd;
+	int		line_size;
 
 	sl->m.map = malloc(sizeof(char *) * (sl->m.size + 1));
 	if (!sl->m.map)
 		return (1);
 	fd = open(file, O_RDONLY);
 	sl->m.size = 0;
+	line_size = 0;
 	while (1)
 	{
 		sl->m.map[sl->m.size] = get_next_line(fd);
 		if (!sl->m.map[sl->m.size])
-			return (1);
-		// if (map_is_rectangle(sl) == 1)
-		// 	return (1);
+			break ;
+		if (map_is_rectangle(sl) == 1)
+			line_size++;
 		sl->m.size++;
 	}
 	close(fd);
+	if (line_size > 0)
+	{
+		ft_error("Map must be a rectangle");
+		return (1);
+	}
 	return (0);
 }
 
@@ -89,13 +97,14 @@ void	img_to_win(t_sl *sl)
 		mlx_put_image_to_window (sl->g.mlx, sl->g.win, sl->im.z, sl->m.j * 64, sl->m.i * 64);
 	else if (sl->m.map[sl->m.i][sl->m.j] == 'P')
 		mlx_put_image_to_window (sl->g.mlx, sl->g.win, sl->im.p, sl->m.j * 64, sl->m.i * 64);
-	else if (sl->m.map[sl->m.i][sl->m.j] == 'C')
+	if (sl->m.map[sl->m.i][sl->m.j] == 'C')
 		mlx_put_image_to_window (sl->g.mlx, sl->g.win, sl->im.c, sl->m.j * 64, sl->m.i * 64);
 	sl->m.j++;
 }
 
 void	update_img(t_sl *sl)
 {
+	sl->m.i = 0;
 	while ((int)sl->m.i < sl->m.size)
 	{
 		sl->m.j = 0;
@@ -103,6 +112,11 @@ void	update_img(t_sl *sl)
 			img_to_win(sl);
 		sl->m.i++;
 	}
+	sl->ply.str = ft_itoa(sl->ply.p_moves);
+	ft_putstr_fd(sl->ply.str, STDOUT_FILENO);
+	write(STDOUT_FILENO, "\n", 1);
+	mlx_string_put(sl->g.mlx, sl->g.win, sl->m.i, sl->m.j, 0x0000FF00, sl->ply.str);
+	free(sl->ply.str);
 }
 
 void	destroy_image(t_sl *sl)
