@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:25:39 by eminatch          #+#    #+#             */
-/*   Updated: 2022/12/01 20:44:11 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/12/05 21:59:58 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define KEY_R			65363
 # define KEY_L			65361
 
+# define T				64
 
 typedef struct s_m
 {
@@ -69,7 +70,7 @@ typedef struct s_player
 	int		count_item;
 	int		total_item;
 	int		p_moves;
-	char	*str;
+	char	*s;
 }				t_player;
 
 typedef struct s_g
@@ -79,55 +80,59 @@ typedef struct s_g
 	void	*img;
 }				t_g;
 
-typedef struct s_sl
+typedef struct s_s
 {
 	t_m			m;
 	t_im		im;
 	t_player	ply;
 	t_g			g;
-}					t_sl;
+}					t_s;
 
 /* main */
-void	ft_init_solong(t_sl *sl);
+void	ft_init_solong(t_s *s);
 int		main(int argc, char **argv);
-void	check_condition(t_sl *sl, char **argv);
+void	check_condition(t_s *s, char **argv);
+void	mlx_win_issue(t_s *s);
 
 /* graphic part */
-int		fill_map(t_sl *sl, char *file);
-int		fill_map_bis(t_sl *sl, char *file);
-void	textures_to_window(t_sl *sl);
-void	set_img(t_sl *sl);
-void	img_to_win(t_sl *sl);
-void	destroy_image(t_sl *sl);
-void	update_img(t_sl *sl);
+int		fill_map(t_s *s, char *file);
+int		fill_map_bis(t_s *s, char *file);
+void	textures_to_window(t_s *s);
+int		set_img(t_s *s);
+int		img_to_win(t_s *s);
+void	destroy_image(t_s *s);
+void	update_img(t_s *s);
+int		check_texture(t_s *s);
 
 /* player part */
-int		press_key(int key, t_sl *sl);
-void	action(t_sl *sl, int x, int y);
+int		press_key(int key, t_s *s);
+void	action(t_s *s, int x, int y);
 void	ft_find_player(t_m *m);
-void	nb_moves(t_sl *sl);
+size_t	ft_strlen_sl(char *s);
 
-/* errors part*/
-int		exit_game(t_sl *sl);
-int		argv_checking(char *argv, t_sl *sl);
-int		map_checking(t_sl *sl);
-int		map_checking_bis(t_sl *sl);
+/* errors_map */
+int		argv_checking(char *argv, t_s *s);
+int		map_checking(t_s *s);
+int		map_checking_bis(t_s *s);
+int		map_checking_conditions(t_s *s);
+int		map_is_rectangle(t_s *s);
+int		check_walls(char *str);
+int		hidden_file(char *argv);
+
+/* errors */
+int		exit_game(t_s *s);
 void	ft_free(char **str);
 void	ft_error(char *s1);
-int		map_is_rectangle(t_sl *sl);
+int		check_path(t_s *s);
+int		open_process(char *file);
 
 /* path_finding */
-int		stuck(t_sl *sl, int x, int y);
-int		not_stuck(t_sl *sl, int x, int y);
-int		check_move(t_sl *sl, int x, int y);
-int		check_path(t_sl *sl);
-int		fill_map2(t_sl *sl, char *file);
-int		fill_map2_bis(t_sl *sl, char *file);
-int		print_tab(char **tab, t_sl *sl);
-int		**copy_map(t_sl *sl, char *str);
-
-/* colors */
-char	putstr_sl(int b, char *str);
-size_t	ft_strlen_sl(char *s);
+int		stuck(t_s *s, int x, int y);
+int		not_stuck(t_s *s, int x, int y);
+int		check_move(t_s *s, int x, int y);
+int		fill_map2(t_s *s, char *file);
+int		fill_map2_bis(t_s *s, char *file);
+int		print_tab(char **tab, t_s *s);
+int		**copy_map(t_s *s, char *str);
 
 #endif

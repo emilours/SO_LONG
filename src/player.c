@@ -6,54 +6,54 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:22:11 by eminatch          #+#    #+#             */
-/*   Updated: 2022/12/01 20:39:52 by eminatch         ###   ########.fr       */
+/*   Updated: 2022/12/02 19:12:02 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-int	press_key(int key, t_sl *sl)
+int	press_key(int key, t_s *s)
 {
-	sl->m.i = 0;
-	sl->m.j = 0;
+	s->m.i = 0;
+	s->m.j = 0;
 	if (key == KEY_ESC)
 	{
-		mlx_loop_end(sl->g.mlx);
+		mlx_loop_end(s->g.mlx);
 		return (1);
 	}
-	ft_find_player(&sl->m);
+	ft_find_player(&s->m);
 	if (key == KEY_W || key == KEY_UP)
-		action(sl, sl->m.i - 1, sl->m.j);
+		action(s, s->m.i - 1, s->m.j);
 	else if (key == KEY_D || key == KEY_R)
-		action(sl, sl->m.i, sl->m.j + 1);
+		action(s, s->m.i, s->m.j + 1);
 	else if (key == KEY_A || key == KEY_L)
-		action(sl, sl->m.i, sl->m.j - 1);
+		action(s, s->m.i, s->m.j - 1);
 	else if (key == KEY_S || key == KEY_DN)
-		action(sl, sl->m.i + 1, sl->m.j);
+		action(s, s->m.i + 1, s->m.j);
 	return (0);
 }
 
-void	action(t_sl *sl, int x, int y)
+void	action(t_s *s, int x, int y)
 {
-	if (sl->m.map[x][y] == 'E'
-			&& sl->m.nb_c == 0)
+	if (s->m.map[x][y] == 'E'
+			&& s->m.nb_c == 0)
 	{
-		sl->ply.p_moves++;
-		sl->ply.str = ft_itoa(sl->ply.p_moves);
-		ft_putstr_fd(sl->ply.str, STDOUT_FILENO);
+		s->ply.p_moves++;
+		s->ply.s = ft_itoa(s->ply.p_moves);
+		ft_putstr_fd(s->ply.s, STDOUT_FILENO);
 		write(STDOUT_FILENO, "\n", 1);
-		free(sl->ply.str);
-		mlx_loop_end(sl->g.mlx);
+		free(s->ply.s);
+		mlx_loop_end(s->g.mlx);
 	}
-	else if (sl->m.map[x][y] != '1'
-			&& sl->m.map[x][y] != 'E')
+	else if (s->m.map[x][y] != '1'
+			&& s->m.map[x][y] != 'E')
 	{
-		if (sl->m.map[x][y] == 'C')
-			sl->m.nb_c--;
-		sl->m.map[x][y] = 'P';
-		sl->m.map[sl->m.i][sl->m.j] = '0';
-		sl->ply.p_moves++;
-		update_img(sl);
+		if (s->m.map[x][y] == 'C')
+			s->m.nb_c--;
+		s->m.map[x][y] = 'P';
+		s->m.map[s->m.i][s->m.j] = '0';
+		s->ply.p_moves++;
+		update_img(s);
 	}
 }
 
@@ -75,4 +75,14 @@ void	ft_find_player(t_m *m)
 		}
 		m->i++;
 	}
+}
+
+size_t	ft_strlen_sl(char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s && s[len] != '\n' && s[len] != '\0')
+		len++;
+	return (len);
 }
